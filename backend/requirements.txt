@@ -1,0 +1,20 @@
+# Strands Decider 2B（オープンソースの意思決定モデル）のランタイム。
+#
+# このバックエンド(server.mjs)は、Strands Decider を "直接" 実行しません。
+# 代わりに、別プロセス/別マシン/クラウドで起動した Strands Decider の
+# 公式HTTPサーバー( `strands-decider serve` が公開する /v1/systemone )へ
+# リクエストを中継します。
+#
+# したがって strands-decider をインストール・起動するのは、
+# 「推論を担当するマシン(ローカルGPU機 or クラウド)」側だけで構いません。
+# 非力なPCでは server.mjs(中継)だけを動かし、DECIDER_URL で
+# クラウド上の serve を指すのが推奨構成です。
+#
+# 推論担当マシンでのインストール例:
+#   pip install "strands-decider[cpu]"      # CPU で動かす場合
+#   pip install "strands-decider[cuda]"     # Linux + NVIDIA GPU の場合
+# 起動例:
+#   strands-decider serve StrandsAgents/strands-decider-2B-qwen3.5-v1-2610 --port 8000
+#
+# 初回起動時に Hugging Face からベース重み(Qwen3.5-2B-Base 約4.5GB)が取得されます。
+strands-decider

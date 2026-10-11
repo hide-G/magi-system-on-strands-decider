@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- スマホ対応: レスポンシブのためのビューポート設定 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0f0a" />
+    <title>MAGI SYSTEM on Strands Decider 2B</title>
+    <meta name="description" content="AI3賢者(Strands Decider 2B / AWS オープンソース意思決定モデル)があなたの議題を審議し、可決・否決を判定するMAGIシステム。" />
+
+    <!-- OGP (Xのリンクカード用) — 属性は1行にまとめる（クローラ対策） -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MAGI SYSTEM on Strands Decider 2B" />
+    <meta property="og:title" content="MAGI SYSTEM on Strands Decider 2B" />
+    <meta property="og:description" content="AI3賢者(Strands Decider 2B)があなたの議題を審議し、可決・否決を判定する。あなたも議題を諮ってみよう。" />
+    <meta property="og:image" content="ogp.png?v=1" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="MAGI SYSTEM on Strands Decider 2B" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MAGI SYSTEM on Strands Decider 2B" />
+    <meta name="twitter:description" content="AI3賢者(Strands Decider 2B)があなたの議題を審議し、可決・否決を判定する。" />
+    <meta name="twitter:image" content="ogp.png?v=1" />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- CRTスキャンライン/ビネットのオーバーレイ -->
+    <div class="crt-overlay" aria-hidden="true"></div>
+
+    <!-- TOP SECRET 帯 -->
+    <div class="classified-bar">
+      <span class="classified-text" data-i18n="header.classified">極秘 · CLASSIFIED</span>
+      <span class="classified-org" data-i18n="header.org">特務機関 NERV</span>
+      <span class="classified-text" data-i18n="header.classified">極秘 · CLASSIFIED</span>
+    </div>
+
+    <!-- ヘッダー -->
+    <header class="magi-header">
+      <div class="header-left">
+        <span class="magi-logo" data-i18n="app.title">MAGI SYSTEM</span>
+        <span class="magi-sub" data-i18n="app.subtitle">on Strands Decider 2B</span>
+      </div>
+      <div class="header-right">
+        <button id="lang-btn" class="lang-btn" title="Language">🌐 <span id="lang-label" data-i18n="lang.toggle">EN</span></button>
+        <div id="mode-badge" class="mode-badge">MOCK</div>
+      </div>
+    </header>
+
+    <!-- 3賢者パネル（三角配置） -->
+    <main class="magi-main">
+      <section class="sages" id="sages">
+        <!-- app.js が MAGI_CONFIG.sages から生成 -->
+      </section>
+
+      <!-- 総合判定 -->
+      <section class="verdict" id="verdict">
+        <div class="verdict-inner">
+          <div class="verdict-label" id="verdict-label" data-i18n="verdict.standby">STANDBY</div>
+          <div class="verdict-tally" id="verdict-tally" data-i18n="verdict.prompt">議題を入力してください</div>
+          <button id="share-btn" class="btn-share hidden">𝕏 <span data-i18n="btn.share">Xでシェア</span></button>
+        </div>
+      </section>
+    </main>
+
+    <!-- 入力エリア -->
+    <section class="input-area">
+      <div class="input-wrap">
+        <textarea
+          id="agenda-input"
+          class="agenda-input"
+          data-i18n-attr="placeholder:input.placeholder"
+          rows="2"
+        ></textarea>
+      </div>
+      <div class="input-buttons">
+        <button id="mic-btn" class="btn btn-mic" title="voice">🎤 <span data-i18n="btn.mic">音声</span></button>
+        <button id="submit-btn" class="btn btn-submit">▶ <span data-i18n="btn.submit">審議開始</span></button>
+        <button id="log-btn" class="btn btn-log">📡 <span data-i18n="btn.log">ログ表示</span></button>
+      </div>
+      <div id="mic-status" class="mic-status"></div>
+    </section>
+
+    <!-- 通信ログパネル（ログ表示ボタンで開閉） -->
+    <aside id="log-panel" class="log-panel hidden">
+      <div class="log-panel-header">
+        <span>📡 <span data-i18n="log.title">DECIDER 通信ログ</span></span>
+        <button id="log-close" class="log-close">✕</button>
+      </div>
+      <div id="log-content" class="log-content">
+        <p class="log-empty" data-i18n="log.empty">まだ通信はありません。審議を開始すると Strands Decider との送受信がここに表示されます。</p>
+      </div>
+    </aside>
+
+    <footer class="magi-footer">
+      <span id="footer-info" data-i18n="footer.mock">MODE: MOCK ｜ ウェイトリスト中はモックエンジンで動作します</span>
+    </footer>
+
+    <script src="magi-config.js"></script>
+    <script src="decider-client.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

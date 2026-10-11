@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200px" height="630px" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="0%" r="90%">
+      <stop offset="0%" stop-color="#0d2018"/>
+      <stop offset="60%" stop-color="#04070a"/>
+      <stop offset="100%" stop-color="#04070a"/>
+    </radialGradient>
+    <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="4" fill="none"/>
+      <rect width="4" height="1" y="3" fill="#78ffb4" opacity="0.04"/>
+    </pattern>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#scan)"/>
+
+  <!-- TOP SECRET 帯 -->
+  <rect x="0" y="0" width="1200" height="34" fill="#140900"/>
+  <text x="30" y="23" font-family="Courier New, monospace" font-size="16" fill="#ff6a00" letter-spacing="4" font-weight="bold">TOP SECRET · CLASSIFIED</text>
+  <text x="600" y="23" font-family="Courier New, monospace" font-size="16" fill="#ffb300" letter-spacing="6" font-weight="bold" text-anchor="middle">特務機関 NERV</text>
+  <text x="1170" y="23" font-family="Courier New, monospace" font-size="16" fill="#ff6a00" letter-spacing="4" font-weight="bold" text-anchor="end">CLASSIFIED</text>
+
+  <!-- タイトル -->
+  <text x="600" y="150" font-family="Courier New, monospace" font-size="76" fill="#ff6a00" letter-spacing="10" font-weight="bold" text-anchor="middle">MAGI SYSTEM</text>
+  <text x="600" y="190" font-family="Courier New, monospace" font-size="26" fill="#6f9a80" letter-spacing="4" text-anchor="middle">on Jev / TypeSafe System One</text>
+
+  <!-- 3賢者パネル -->
+  <!-- BALTHASAR (上段中央) -->
+  <g>
+    <polygon points="470,240 730,240 744,254 744,330 730,344 470,344 456,330 456,254"
+      fill="#0a1210" stroke="#33ccff" stroke-width="2"/>
+    <text x="600" y="285" font-family="Courier New, monospace" font-size="26" fill="#33ccff" letter-spacing="4" font-weight="bold" text-anchor="middle">BALTHASAR</text>
+    <text x="600" y="322" font-family="Courier New, monospace" font-size="34" fill="#e6ffe6" font-weight="bold" text-anchor="middle">0.89</text>
+  </g>
+  <!-- MELCHIOR (左) -->
+  <g>
+    <polygon points="150,380 410,380 424,394 424,470 410,484 150,484 136,470 136,394"
+      fill="#0a1210" stroke="#33ff66" stroke-width="2"/>
+    <text x="280" y="425" font-family="Courier New, monospace" font-size="26" fill="#33ff66" letter-spacing="4" font-weight="bold" text-anchor="middle">MELCHIOR</text>
+    <text x="280" y="462" font-family="Courier New, monospace" font-size="34" fill="#e6ffe6" font-weight="bold" text-anchor="middle">0.79</text>
+  </g>
+  <!-- CASPER (右) -->
+  <g>
+    <polygon points="790,380 1050,380 1064,394 1064,470 1050,484 790,484 776,470 776,394"
+      fill="#0a1210" stroke="#ffcc22" stroke-width="2"/>
+    <text x="920" y="425" font-family="Courier New, monospace" font-size="26" fill="#ffcc22" letter-spacing="4" font-weight="bold" text-anchor="middle">CASPER</text>
+    <text x="920" y="462" font-family="Courier New, monospace" font-size="34" fill="#e6ffe6" font-weight="bold" text-anchor="middle">0.82</text>
+  </g>
+
+  <!-- 判定バナー -->
+  <polygon points="380,520 820,520 838,560 820,600 380,600 362,560"
+    fill="#0a1210" stroke="#46ff78" stroke-width="2"/>
+  <text x="600" y="573" font-family="Courier New, monospace" font-size="40" fill="#46ff78" letter-spacing="8" font-weight="bold" text-anchor="middle">APPROVAL</text>
+</svg>

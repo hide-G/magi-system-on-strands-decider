@@ -1,0 +1,612 @@
+/* ============================================================
+   MAGI SYSTEM on Jev - エヴァンゲリオン風スタイル (v2)
+   MAGI象徴の三角配置 / ヘキサゴンパネル / スキャンライン /
+   コーナー装飾 / 決議グロー / CRT演出。スマホ対応。
+   ============================================================ */
+
+:root {
+  --bg: #04070a;
+  --bg2: #070d10;
+  --panel-bg: #0a1210;
+  --grid: #16352a;
+  --magi-orange: #ff6a00;
+  --magi-amber: #ffb300;
+  --text: #e6ffe6;
+  --text-dim: #6f9a80;
+  --approve: #46ff78;
+  --reject: #ff2b4e;
+  --hold: #ffcc22;
+  --scan: rgba(120, 255, 180, 0.035);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(circle at 50% -10%, #0d2018 0%, var(--bg) 55%),
+    var(--bg);
+  color: var(--text);
+  font-family: "Courier New", "Consolas", "MS Gothic", monospace;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 1画面に収める（ページ自体はスクロールさせない） */
+  overflow: hidden;
+  position: relative;
+}
+
+/* ---- CRT スキャンライン + ビネット ---- */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 2px,
+      var(--scan) 3px,
+      transparent 4px
+    );
+  mix-blend-mode: screen;
+}
+.crt-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+/* ---- TOP SECRET 帯 ---- */
+.classified-bar {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 14px;
+  background: repeating-linear-gradient(
+    45deg,
+    #2a1200,
+    #2a1200 12px,
+    #140900 12px,
+    #140900 24px
+  );
+  border-bottom: 1px solid var(--magi-orange);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+}
+.classified-text {
+  color: var(--magi-orange);
+  font-weight: bold;
+  opacity: 0.85;
+}
+.classified-org {
+  color: var(--magi-amber);
+  letter-spacing: 4px;
+  font-weight: bold;
+}
+
+/* ---- ヘッダー ---- */
+.magi-header {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 16px;
+  border-bottom: 2px solid var(--magi-orange);
+  background: linear-gradient(180deg, #1a0f00, transparent);
+  position: relative;
+}
+.magi-header::after {
+  /* リベット風の下線ドット */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--magi-orange) 0 6px,
+    transparent 6px 14px
+  );
+  opacity: 0.4;
+}
+.magi-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 6px;
+  color: var(--magi-orange);
+  text-shadow: 0 0 10px rgba(255, 106, 0, 0.7);
+}
+.magi-sub {
+  display: block;
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lang-btn {
+  background: #142014;
+  border: 1px solid var(--grid);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  padding: 6px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.lang-btn:hover {
+  border-color: var(--magi-amber);
+  color: var(--magi-amber);
+}
+.mode-badge {
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 5px 11px;
+  border: 1px solid var(--magi-amber);
+  color: var(--magi-amber);
+  border-radius: 3px;
+  letter-spacing: 2px;
+  box-shadow: inset 0 0 8px rgba(255, 179, 0, 0.15);
+}
+.mode-badge.live {
+  border-color: var(--approve);
+  color: var(--approve);
+  box-shadow: inset 0 0 8px rgba(70, 255, 120, 0.2);
+}
+
+/* ---- メイン ---- */
+.magi-main {
+  flex: 1 1 auto;
+  min-height: 0; /* flex子のはみ出しを許容し、余りを比率配分 */
+  padding: 12px 16px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* 3賢者パネル: MAGIの三角配置
+   BALTHASAR を上段中央、MELCHIOR / CASPER を下段に置く */
+.sages {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas:
+    "top    top"
+    "left   right";
+  gap: 10px 22px;
+  justify-items: center;
+  align-content: center;
+  position: relative;
+}
+/* 三角形をつなぐ結線（装飾） */
+.sages::before {
+  content: "";
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  width: 1px;
+  height: 40%;
+  background: linear-gradient(var(--grid), transparent);
+  transform: translateX(-0.5px);
+  z-index: 0;
+}
+.sage-melchior { grid-area: left; }
+.sage-balthasar { grid-area: top; max-width: 420px; }
+.sage-casper { grid-area: right; }
+
+.sage {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
+    var(--panel-bg);
+  border: 1px solid var(--grid);
+  padding: 12px 16px;
+  text-align: center;
+  transition: all 0.35s ease;
+  overflow: hidden;
+  /* パネル内を上下中央に詰める */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* ヘキサゴン風に角を落とす */
+  clip-path: polygon(
+    14px 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    14px 100%,
+    0 calc(100% - 14px),
+    0 14px
+  );
+}
+/* スキャンライン */
+.sage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 3px,
+    rgba(255, 255, 255, 0.02) 3px 4px
+  );
+  pointer-events: none;
+}
+/* コーナーブラケット */
+.sage::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--corner, var(--grid)), var(--corner, var(--grid))) 0 0 / 16px 2px no-repeat,
+    linear-gradient(var(--corner, var(--grid)), var(--corner, var(--grid))) 0 0 / 2px 16px no-repeat,
+    linear-gradient(var(--corner, var(--grid)), var(--corner, var(--grid))) 100% 100% / 16px 2px no-repeat,
+    linear-gradient(var(--corner, var(--grid)), var(--corner, var(--grid))) 100% 100% / 2px 16px no-repeat;
+  opacity: 0.8;
+}
+
+.sage-index {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  z-index: 2;
+}
+.sage-name {
+  font-size: 1.05rem;
+  font-weight: bold;
+  letter-spacing: 4px;
+  position: relative;
+  z-index: 2;
+}
+.sage-persona {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 2;
+}
+.sage-noul {
+  font-size: clamp(1.8rem, 5vh, 2.4rem);
+  font-weight: bold;
+  margin: 6px 0 1px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 2;
+  line-height: 1.1;
+  text-shadow: 0 0 10px currentColor;
+}
+.sage-vote {
+  font-size: 0.88rem;
+  font-weight: bold;
+  letter-spacing: 3px;
+  position: relative;
+  z-index: 2;
+}
+.sage-status-label {
+  font-size: 0.52rem;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  position: relative;
+  z-index: 2;
+}
+.sage-bar {
+  height: 6px;
+  background: #0c1a14;
+  border: 1px solid var(--grid);
+  margin-top: 8px;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+.sage-bar-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* 判定による色付け（--cornerでブラケット色も連動） */
+.sage.approve { border-color: var(--approve); --corner: var(--approve); box-shadow: 0 0 18px rgba(70, 255, 120, 0.35); }
+.sage.reject  { border-color: var(--reject);  --corner: var(--reject);  box-shadow: 0 0 18px rgba(255, 43, 78, 0.4); }
+.sage.hold    { border-color: var(--hold);    --corner: var(--hold);    box-shadow: 0 0 18px rgba(255, 204, 34, 0.3); }
+.sage.thinking { animation: sagePulse 0.7s infinite alternate; }
+@keyframes sagePulse {
+  from { border-color: var(--grid); --corner: var(--grid); box-shadow: none; }
+  to   { border-color: var(--magi-amber); --corner: var(--magi-amber); box-shadow: 0 0 16px rgba(255, 179, 0, 0.3); }
+}
+
+.vote-approve { color: var(--approve); }
+.vote-reject  { color: var(--reject); }
+.vote-hold    { color: var(--hold); }
+.vote-standby { color: var(--text-dim); }
+
+/* ---- 総合判定 ---- */
+.verdict {
+  flex: 0 0 auto;
+  border: 1px solid var(--grid);
+  background: var(--panel-bg);
+  padding: 3px;
+  position: relative;
+  clip-path: polygon(
+    18px 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%,
+    18px 100%, 0 50%
+  );
+}
+.verdict-inner {
+  padding: 10px 16px;
+  text-align: center;
+}
+.verdict-label {
+  font-size: clamp(1.4rem, 4vh, 2rem);
+  font-weight: bold;
+  letter-spacing: 6px;
+  transition: color 0.3s;
+}
+.verdict-tally {
+  font-size: 0.76rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+/* Xシェアボタン */
+.btn-share {
+  margin-top: 10px;
+  padding: 8px 18px;
+  background: #0f1a13;
+  color: var(--text);
+  border: 1px solid var(--magi-amber);
+  font-family: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+.btn-share:hover {
+  background: var(--magi-amber);
+  color: #1a0f00;
+  box-shadow: 0 0 12px rgba(255, 179, 0, 0.4);
+}
+.btn-share:active { transform: scale(0.97); }
+.btn-share.hidden { display: none; }
+.verdict.approval { border-color: var(--approve); background: radial-gradient(ellipse at center, rgba(70,255,120,.08), var(--panel-bg)); }
+.verdict.approval .verdict-label { color: var(--approve); text-shadow: 0 0 16px rgba(70,255,120,.6); }
+.verdict.rejection { border-color: var(--reject); background: radial-gradient(ellipse at center, rgba(255,43,78,.08), var(--panel-bg)); }
+.verdict.rejection .verdict-label { color: var(--reject); text-shadow: 0 0 16px rgba(255,43,78,.6); animation: alarm 0.5s infinite alternate; }
+.verdict.deliberation { border-color: var(--hold); }
+.verdict.deliberation .verdict-label { color: var(--hold); }
+.verdict.thinking { border-color: var(--magi-amber); }
+.verdict.thinking .verdict-label { color: var(--magi-amber); animation: alarm 0.7s infinite alternate; }
+@keyframes alarm {
+  from { opacity: 1; }
+  to   { opacity: 0.55; }
+}
+
+/* ---- 入力エリア ---- */
+.input-area {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border-top: 1px solid var(--grid);
+  background: #060c09;
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+}
+.input-wrap {
+  border: 1px solid var(--grid);
+  border-left: 3px solid var(--magi-orange);
+  background: #0a120e;
+}
+.agenda-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  padding: 9px 11px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: none;
+}
+.agenda-input:focus {
+  outline: none;
+}
+.input-wrap:focus-within {
+  border-color: var(--magi-amber);
+  box-shadow: 0 0 10px rgba(255, 179, 0, 0.15);
+}
+.input-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.btn {
+  flex: 1;
+  min-width: 96px;
+  padding: 10px 10px;
+  background: #0f1a13;
+  color: var(--text);
+  border: 1px solid var(--grid);
+  font-family: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+.btn:hover { border-color: var(--magi-amber); color: var(--magi-amber); }
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-submit {
+  background: #2a1600;
+  border-color: var(--magi-orange);
+  color: var(--magi-amber);
+  font-weight: bold;
+}
+.btn-mic.recording {
+  background: #2a0000;
+  border-color: var(--reject);
+  color: var(--reject);
+  animation: sagePulse 0.6s infinite alternate;
+}
+.mic-status {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  margin-top: 5px;
+  min-height: 1em;
+  letter-spacing: 1px;
+}
+
+/* ---- ログパネル ---- */
+.log-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(500px, 94vw);
+  height: 100%;
+  background: #04080cf2;
+  border-left: 2px solid var(--magi-orange);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+  backdrop-filter: blur(3px);
+}
+.log-panel.hidden { transform: translateX(105%); }
+.log-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--grid);
+  color: var(--magi-amber);
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+.log-close {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.log-close:hover { color: var(--reject); }
+.log-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+  font-size: 0.72rem;
+}
+.log-empty { color: var(--text-dim); }
+.log-entry {
+  margin-bottom: 18px;
+  border-bottom: 1px dashed var(--grid);
+  padding-bottom: 12px;
+}
+.log-entry-title { color: var(--magi-amber); font-weight: bold; margin-bottom: 4px; }
+.log-meta { color: var(--text-dim); margin-bottom: 6px; word-break: break-all; }
+.log-arrow { color: var(--magi-orange); font-weight: bold; }
+.log-block {
+  background: #08110c;
+  border: 1px solid var(--grid);
+  padding: 8px;
+  margin: 4px 0 10px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text);
+  line-height: 1.45;
+}
+
+/* ---- フッター ---- */
+.magi-footer {
+  flex: 0 0 auto;
+  padding: 5px 16px;
+  border-top: 1px solid var(--grid);
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* ============================================================
+   スマホ対応
+   縦画面では3賢者を縦積みし、三角結線を消す。
+   ============================================================ */
+@media (max-width: 720px) {
+  /* スマホは縦積みが読みやすいので、ページスクロールを許可する */
+  body { height: auto; min-height: 100vh; overflow-y: auto; overflow-x: hidden; }
+  .sages { align-content: start; }
+
+  .magi-logo { font-size: 1.15rem; letter-spacing: 3px; }
+  .magi-sub { font-size: 0.55rem; }
+  .classified-bar { font-size: 0.52rem; letter-spacing: 2px; }
+  .classified-text { display: none; } /* 中央のNERVだけ残す */
+  .classified-org { margin: 0 auto; }
+
+  .sages {
+    grid-template-columns: 1fr;
+    grid-template-areas: "top" "left" "right";
+    gap: 12px;
+  }
+  .sages::before { display: none; }
+  .sage-balthasar { max-width: 100%; }
+
+  .sage {
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "name  noul"
+      "persona vote"
+      "bar   bar";
+    align-items: center;
+    text-align: left;
+    gap: 2px 12px;
+    padding: 14px;
+  }
+  .sage-name { grid-area: name; }
+  .sage-persona { grid-area: persona; }
+  .sage-noul { grid-area: noul; margin: 0; font-size: 1.9rem; text-align: right; }
+  .sage-status-label { display: none; }
+  .sage-vote { grid-area: vote; text-align: right; }
+  .sage-bar { grid-area: bar; margin-top: 8px; }
+
+  .verdict-label { font-size: 1.4rem; letter-spacing: 3px; }
+  .verdict { clip-path: none; }
+  .btn { min-width: 72px; font-size: 0.8rem; letter-spacing: 1px; padding: 12px 6px; }
+}

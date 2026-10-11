@@ -1,0 +1,34 @@
+# 依存関係（npm install で復元）
+node_modules/
+
+# Python 仮想環境 / キャッシュ（strands-decider 用）
+.venv/
+__pycache__/
+*.pyc
+
+# Hugging Face モデルキャッシュ（重みは配布物に含めない）
+.cache/
+models/
+
+# OS / エディタ
+.DS_Store
+Thumbs.db
+*.swp
+
+# 一時ファイル
+*.tmp
+.tmp-*
+.*-test.*
+.smoke-*
+.cors-*
+.karaage-*
+.logtest.*
+.mkogp.*
+.sharecheck.*
+
+# ログ
+*.log
+
+# プロモ/予告 動画とその制作物（リポジトリには含めない）
+promo/
+preview/
