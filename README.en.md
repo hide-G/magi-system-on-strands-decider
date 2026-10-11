@@ -57,6 +57,8 @@ magi-decider/
 └─ README*.md
 ```
 
+> See [docs/DEPLOY.ja.md](docs/DEPLOY.ja.md) for the production deployment runbook (S3 + CloudFront / App Runner).
+
 ---
 
 ## Run locally
