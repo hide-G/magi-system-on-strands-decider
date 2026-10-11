@@ -55,6 +55,8 @@ magi-decider/
 └─ README*.md
 ```
 
+> 本番デプロイ（S3 + CloudFront / App Runner）の手順は [docs/DEPLOY.ja.md](docs/DEPLOY.ja.md) を参照してください。
+
 ---
 
 ## ローカルでの起動
