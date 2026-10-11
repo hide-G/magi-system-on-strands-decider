@@ -1,7 +1,7 @@
 {
   "name": "magi-system-on-strands-decider-backend",
   "version": "1.0.0",
-  "description": "MAGI System on Strands Decider 2B - バックエンド(Node.js)。ローカルの strands-decider を実行し、各賢者の noul(0〜1確率)を返す。APIキー不要。",
+  "description": "MAGI System on Strands Decider 2B - バックエンド(Node.js)。3賢者の質問を1リクエストにまとめて上流 strands-decider serve の /v1/systemone へ中継し、各賢者の noul(0〜1確率)を返す。APIキー不要(任意で DECIDER_TOKEN)。",
   "type": "module",
   "main": "server.mjs",
   "scripts": {
