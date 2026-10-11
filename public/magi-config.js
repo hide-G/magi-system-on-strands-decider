@@ -41,7 +41,7 @@ const MAGI_CONFIG = {
     // ローカル検証時は http://localhost:8787 など、
     // 本番は Lambda Function URL / API エンドポイントに置き換える。
     endpoint: "http://localhost:8787/deliberate",
-    model: "StrandsAgents/strands-decider-2B-hobson-v19",
+    model: "StrandsAgents/strands-decider-2B-qwen3.5-v1-2610",
   },
 
   // ------------------------------------------------------------
@@ -210,6 +210,12 @@ const MAGI_I18N = {
   },
 };
 
-// 共有時にポスト文へ含めるサイトURL
-// デプロイ先が決まったら差し替える。
+// 共有時にポスト文へ含めるサイトURL（本番配信URLの差し替えポイント）
+// ------------------------------------------------------------
+// フロント public/ は静的配信（S3 + CloudFront 等）される想定で、
+// バックエンド server.mjs は strands-decider serve への中継のみを担います。
+// 本番デプロイ時は、この値をフロントの公開配信URL（CloudFront ディストリ
+// ビューション等）に差し替えてください。既定値はローカル確認用の
+// プレースホルダです。app.js は `MAGI_SHARE_URL + "?q=" + hash` の形で
+// 使うため、末尾スラッシュを含む文字列の形は変えないでください。
 const MAGI_SHARE_URL = "http://localhost:8080/";

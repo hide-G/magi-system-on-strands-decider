@@ -119,6 +119,36 @@ decider: {
 > `ALLOW_MOCK_FALLBACK=1 node server.mjs` で、上流未起動時に擬似 noul を
 > 返させることもできます（デモ用）。
 
+### 3. 実モデル接続の結合テスト手順（live）
+
+公開エンドポイント（`DECIDER_URL`）と認証トークン（`DECIDER_TOKEN`）は
+**別途用意されるもの**です。以下の `<...>` は必ず自分の値に置き換えてください。
+**URL もトークンもプレースホルダであり、リポジトリには一切コミットしません**（鍵不要の設計）。
+
+```bash
+# (A) 推論担当マシンで上流を起動（まだ無い場合）
+strands-decider serve StrandsAgents/strands-decider-2B-qwen3.5-v1-2610 --port 8000
+
+# (B) 中継バックエンドに、別途渡された接続先とトークンを環境変数で渡して起動
+#     ※ 値はプレースホルダ。実際の URL / トークンはシェル履歴や config に残さない運用を推奨
+cd backend
+DECIDER_URL=https://<your-decider-endpoint> \
+DECIDER_TOKEN=<your-token> \
+node server.mjs
+```
+
+次に `public/magi-config.js` の `mode` を `"live"` にしてフロントを再読み込みし、
+議題を審議します。各賢者の **noul が実モデルから返る**（モックのフォールバックではない）
+ことを、ログパネルの受信JSON で確認してください。判定の決め手は `response.model` です。上流に
+到達した場合はプレーンなモデルID `StrandsAgents/strands-decider-2B-qwen3.5-v1-2610` のままですが、
+モックのフォールバック時は中継が末尾に ` (mock-fallback)` を付与します
+（例: `...-qwen3.5-v1-2610 (mock-fallback)`）。つまり `(mock-fallback)` が付いていなければ実上流からの
+応答です。（レイテンシや `usage.input_tokens` が0以外であることは補助的な手がかりに過ぎません。
+`input_tokens` はモックのフォールバック経路でも0以外になるため、それだけでは実/モックを区別できません。）
+
+> `DECIDER_TOKEN` を設定すると、中継は上流へ `Authorization: Bearer <your-token>` を付けます。
+> トークンはサーバー側の環境変数としてのみ渡し、フロントや Git には置かないでください。
+
 ---
 
 ## 使い方
@@ -196,9 +226,9 @@ APIキーもSecretsManagerも不要になったため、Jev版のキー管理に
 **レスポンス**
 ```json
 {
-  "request": { "model": "StrandsAgents/strands-decider-2B-hobson-v19", "state": { }, "questions": { } },
+  "request": { "model": "StrandsAgents/strands-decider-2B-qwen3.5-v1-2610", "state": { }, "questions": { } },
   "response": {
-    "model": "StrandsAgents/strands-decider-2B-hobson-v19",
+    "model": "StrandsAgents/strands-decider-2B-qwen3.5-v1-2610",
     "answers": {
       "melchior":  { "type": "noul", "noul": 0.72 },
       "balthasar": { "type": "noul", "noul": 0.31 },
